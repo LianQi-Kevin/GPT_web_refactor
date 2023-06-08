@@ -4,7 +4,7 @@ function durationTime(time){
     /* 判断时间类型 s/m/h/d/w/M/y */
     let array = Array.from(time);
     let num = array.slice(0, -1).join('');
-    let lastCharacter = array[array.length - 1];
+    let lastCharacter = array[array.length - 1].toString();
     /* 关键字非空 */
     if ("smhdwMy".indexOf(lastCharacter) === -1) {
         return null

@@ -1,31 +1,49 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+import { Eleme } from "@element-plus/icons-vue";
+import { userLogin } from "@/network/login.js"
+
+let loginBtnLoading = ref(false)
 
 // 登录信息
 const loginForm = reactive({
-    userName: "username",
+    username: "username",
     password: "password"
+})
+
+// 登录表单内验证信息
+const loginRules = reactive({
+    username: [
+        { required: true, message: 'Please input Username', trigger: 'change'},
+    ],
+    password: [
+        { required: true, message: 'Please input Password', trigger: 'change'},
+    ],
 })
 
 // 请求登录API
 function login(loginForm) {
-    console.log(loginForm.userName, loginForm.password)
+    // 点击login后显示loading图标
+    loginBtnLoading.value = true
+    // login axios
+    userLogin(loginForm.username, loginForm.password)
+    // userLogin('admin', 'yxAlFXQ&EL6!sxQ').then(r => {console.log(r)})
 }
 
 </script>
 <template>
     <div class="container">
-        <el-form :model="loginForm" label-width="70px" class="loginForm">
-            <el-form-item label="账 号">
-                <el-input clearable v-model="loginForm.userName" placeholder="请输入用户名"/>
+        <el-form :model="loginForm" label-width="70px" class="loginForm" :rules="loginRules" :label-position="'top'">
+            <el-form-item label="账号:" prop="username">
+                <el-input clearable v-model="loginForm.username" placeholder="请输入用户名" />
             </el-form-item>
-            <el-form-item label="密 码">
-                <el-input type="password" v-model="loginForm.password"
-                          placeholder="请输入密码" show-password/>
+            <el-form-item label="密码:" prop="password">
+                <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password />
             </el-form-item>
             <el-form-item>
-                <el-button type="default" plain size="large" disabled auto-insert-space>注册</el-button>
-                <el-button type="primary" plain size="large" @click="login(loginForm)" auto-insert-space>登录</el-button>
+<!--                <el-button type="default" plain size="large" disabled auto-insert-space>注册</el-button>-->
+                <el-button type="primary" plain size="large" @click="login(loginForm)" auto-insert-space
+                           :loading-icon="Eleme" :loading="loginBtnLoading">登录</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -46,6 +64,7 @@ div.container {
     border: 1px solid #68a3c5;
     border-radius: 30px;
 }
+
 .loginForm {
     margin: 20px;
 }
@@ -55,7 +74,8 @@ div.container {
 }
 
 .el-button {
-    width: 47%;
+    //width: 47%;
+    width: 100%;
 }
 
 </style>

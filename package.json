@@ -10,11 +10,15 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "axios": "^1.4.0",
     "element-plus": "^2.3.6",
-    "vue": "^3.2.47"
+    "moment": "^2.29.4",
+    "vue": "^3.2.47",
+    "vue-hooks-plus": "^1.7.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
+    "@vue-hooks-plus/resolvers": "^1.2.4",
     "sass": "^1.63.2",
     "unplugin-auto-import": "^0.16.4",
     "unplugin-element-plus": "^0.7.1",
