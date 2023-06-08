@@ -4,16 +4,16 @@ import Login from "@/view/Login.vue";
 </script>
 
 <template>
-  <div class="root">
-<!--      <hello-world msg="Hello"></hello-world>-->
-      <Login></Login>
-  </div>
+    <div class="root">
+        <!--      <hello-world msg="Hello"></hello-world>-->
+        <Login></Login>
+    </div>
 </template>
 
 <style scoped>
 div.root {
     background: gray;
-    width: 100vh;
+    width: 100vw;
     height: 100vh;
 }
 </style>
