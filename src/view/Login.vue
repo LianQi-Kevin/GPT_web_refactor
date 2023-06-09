@@ -1,7 +1,9 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { Eleme } from "@element-plus/icons-vue";
-import { userLogin } from "@/network/login.js"
+import { userLogin } from "@/network/login.js";
+import 'element-plus/es/components/message/style/css'
+import { ElMessage } from "element-plus";
 
 let loginBtnLoading = ref(false)
 
@@ -25,8 +27,17 @@ const loginRules = reactive({
 function login(loginForm) {
     // 点击login后显示loading图标
     loginBtnLoading.value = true
+    setTimeout(() => {loginBtnLoading.value = false}, 5000)
     // login axios
-    userLogin(loginForm.username, loginForm.password)
+    const item = userLogin(loginForm.username, loginForm.password)
+    item.then(result => {
+        if (result.type === 'error') {
+            ElMessage.error(result.value.response.data['message'])
+        } else {
+
+        }
+    })
+
     // userLogin('admin', 'yxAlFXQ&EL6!sxQ').then(r => {console.log(r)})
 }
 
