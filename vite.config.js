@@ -16,12 +16,15 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': pathSrc,
+
         },
+        extensions: [".js", ".ts", ".json", ".vue"],
     },
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: `@use "@/styles/element/index.scss" as *;`,
+                additionalData: `@use "@/assets/style/theme.scss" as *;`,
+                // additionalData: `@use "element-plus/theme-chalk/dark/css-vars.css" as *;`,
             },
         },
     },
@@ -32,7 +35,7 @@ export default defineConfig({
             // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
             imports: ['vue'],
 
-            // Auto import functions from Element Plus, e.g. ElMessage, ElMessageBox... (with styles)
+            // Auto import functions from Element Plus, e.g. ElMessage, ElMessageBox... (with style)
             // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
             resolvers: [
                 ElementPlusResolver(),

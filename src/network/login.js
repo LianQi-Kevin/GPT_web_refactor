@@ -2,6 +2,8 @@ import axios from 'axios'
 import { setLocalStorage } from '../storageUtils/localStorage.js'
 import { setCookie } from "../storageUtils/cookies.js";
 import { setSessionStorage } from "../storageUtils/sessionStorage.js";
+import 'element-plus/es/components/message/style/css'
+import { ElMessage } from "element-plus";
 
 const localAxios = axios.create({
     baseURL: "http://127.0.0.1:5000",
@@ -30,9 +32,21 @@ export async function userLogin(username, password) {
             userInfo.data['data']['role'] === 'admin' ? '3d' : '15d')
         setCookie('jwt_token', accessToken, '14m')
         setSessionStorage('user_info', userInfo.data['data'])
-        return {type: 'success', value: userInfo.data['data']}
 
+        ElMessage({
+            type: 'success',
+            message: 'Successful Login, jumping',
+            duration: 3000
+        })
+
+        return {type: 'success', value: userInfo.data['data']}
     } catch (err) {
+        ElMessage({
+            type: 'error',
+            message: err.response.data['message'],
+            duration: 5000,
+            showClose: true
+        })
         return {type: 'error', value: err}
     }
 }

@@ -2,15 +2,13 @@
 import { reactive, ref } from "vue";
 import { Eleme } from "@element-plus/icons-vue";
 import { userLogin } from "@/network/login.js";
-import 'element-plus/es/components/message/style/css'
-import { ElMessage } from "element-plus";
 
 let loginBtnLoading = ref(false)
 
 // 登录信息
 const loginForm = reactive({
-    username: "username",
-    password: "password"
+    username: "admin",
+    password: "yxAlFXQ&EL6!sxQ"
 })
 
 // 登录表单内验证信息
@@ -29,19 +27,10 @@ function login(loginForm) {
     loginBtnLoading.value = true
     setTimeout(() => {loginBtnLoading.value = false}, 5000)
     // login axios
-    const item = userLogin(loginForm.username, loginForm.password)
-    item.then(result => {
-        if (result.type === 'error') {
-            ElMessage.error(result.value.response.data['message'])
-        } else {
-
-        }
-    })
-
-    // userLogin('admin', 'yxAlFXQ&EL6!sxQ').then(r => {console.log(r)})
+    userLogin(loginForm.username, loginForm.password).then(result => {console.log(result)})
 }
-
 </script>
+
 <template>
     <div class="container">
         <el-form :model="loginForm" label-width="70px" class="loginForm" :rules="loginRules" :label-position="'top'">
