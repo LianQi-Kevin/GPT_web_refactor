@@ -1,12 +1,14 @@
 <script setup>
-import Login from "@/view/Login.vue";
+// import Login from "@/view/Login.vue";
+import Chat from "@/view/Chat.vue";
 // import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
     <div class="root">
         <!--      <hello-world msg="Hello"></hello-world>-->
-        <Login></Login>
+<!--        <Login></Login>-->
+        <Chat></Chat>
     </div>
 </template>
 
