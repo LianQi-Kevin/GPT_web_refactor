@@ -5,23 +5,14 @@ import { ref } from "vue";
 
 // prompt
 const prompt = ref('')
-const requesting = ref(true)
+const requesting = ref(false)
 
 // model select
 const modelName = ref('GPT-3.5')
 const modelNameList = [
-    {
-        label: 'GPT-3.5',
-        value: 'gpt-35-turbo'
-    },
-    {
-        label: 'GPT4-8k',
-        value: 'gpt-4'
-    },
-    {
-        label: 'GPT4-32K',
-        value: 'gpt-4-32k'
-    }
+    {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
+    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
+    {label: 'GPT-4-32K', value: 'gpt-4-32k'}
 ]
 
 // router back
@@ -31,28 +22,35 @@ const goBack = () => {
 
 // chat area list
 // const chatBotExample = ChatBot;
-const conversations = reactive([
-    {
-        id: 0,
-        component: '<div class="ChatBot" style="margin: 20px 0 0 0">Basic Message</div>'
-    },
-])
-
-const placeholderArea = '<div style="width: 80vw; height: 20px; background-color: #8cc499; margin: 20px 0 0 0" />'
+const conversations = reactive([{id: 0, component: '<div class="ChatBot" style="margin: 20px 0 0 0">Basic Message</div>'}])
 
 const localTime = ref(new Date().toLocaleString('zh-CN', { hour12: false }));
 
 // const dividerMSG = "22:51:17 [vite] hmr update /src/view/Chat.vue"
 const dividerMSG = '<div class="ChatBot">22:51:17 [vite] hmr update /src/view/Chat.vue</div>'
 
+function notAllNewLines(str) {
+    // 检查字符串是否全部由\n组成
+    return ! /^(\n)+$/.test(str);
+}
 
-function addConversation(msg) {
-    console.log(msg)
-    conversations.push({
-        id: conversations.length + 1,
-        // component: placeholderArea
-        component: placeholderArea
-    })
+function addConversation(e) {
+    // 处理enter提交，ctrl+enter回车
+    if(e.ctrlKey && e.keyCode===13) {
+        // ctrl+enter触发
+        prompt.value += '\n';
+    } else {
+        // enter触发, 条件阻止空内容触发请求
+        if (prompt.value !== "" && notAllNewLines(prompt.value)) {
+            conversations.push({
+                id: conversations.length + 1,
+                component: prompt.value
+            })
+            console.log(conversations)
+            prompt.value = ""   // 重置prompt的值
+        }
+        e.preventDefault();  // 阻止浏览器默认的敲击回车换行的方法
+    }
 }
 </script>
 
@@ -81,11 +79,17 @@ function addConversation(msg) {
 
         <div class="chatArea" id="main">
             <div class="bot">
-                <img src="@/assets/svg/pwa-192x192.svg" alt="botIcon" class="botIcon"/>
-<!--                <el-avatar style="min-width: 40px" src="@/../public/pwa-192x192.png"/>-->
+                <img src="@/assets/svg/chatAvatar.svg" alt="botIcon" class="avatar"/>
                 <div class="chat">
                     <div class="botTime">{{ localTime }}</div>
                     <div class="botMsg" v-html="dividerMSG" />
+                </div>
+            </div>
+            <div class="user">
+                <img src="@/assets/svg/userAvatar.svg" alt="userIcon" class="avatar" />
+                <div class="chat">
+                    <div class="userTime">{{ localTime }}</div>
+                    <div class="userMsg" v-html="dividerMSG" />
                 </div>
             </div>
 <!--            <div v-for="element in conversations" :key="element.id">-->
@@ -100,12 +104,13 @@ function addConversation(msg) {
                 <el-button :icon="Delete" class="btn" circle :disabled="requesting" />
             </div>
             <div class="promptBox">
-                <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus
-                          :autosize="{ minRows: 1, maxRows: 7 }" placeholder="Prompt here"/>
+                <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus resize="none" show-word-limit
+                          @keydown.enter.native="addConversation" :autosize="{ minRows: 1, maxRows: 10 }"
+                          placeholder="随便说些什么吧... ( ctrl + enter 换行)"/>
             </div>
             <div class="submitBtn">
                 <el-button :icon="Position" class="basic" type="success"
-                           plain @click="addConversation(prompt)" />
+                           plain @click="addConversation" />
             </div>
         </div>
     </div>
@@ -137,9 +142,9 @@ div.chatArea {
     .bot{
         display: flex;
         flex-direction: row;
-        max-width: 70vw;
+        max-width: 80vw;
         margin: 15px auto 0 10px;
-        .botIcon {
+        .avatar {
             width: 40px;
             height: 40px;
         }
@@ -158,6 +163,34 @@ div.chatArea {
                 text-align: left;
                 border: #6C6E72 2px solid;
                 border-radius: 2px 10px 10px 10px;
+                padding: 7px;
+            }
+        }
+    }
+    .user {
+        display: flex;
+        flex-direction: row-reverse;
+        max-width: 80vw;
+        margin: 15px 10px 0 auto;
+        .avatar {
+            width: 40px;
+            height: 40px;
+        }
+        .chat {
+            display: flex;
+            flex-direction: column;
+            margin-right: 5px;
+            .userTime {
+                font-size: 13px;
+                text-align: right;
+                color: #8D9095;
+            }
+            .userMsg {
+                font-size: 15px;
+                background-color:  #1D1D1D;
+                text-align: left;
+                border: #6C6E72 2px solid;
+                border-radius: 10px 2px 10px 10px;
                 padding: 7px;
             }
         }
