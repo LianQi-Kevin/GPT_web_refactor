@@ -1,8 +1,9 @@
 <script setup>
 import {Delete, Download, Position, Setting} from "@element-plus/icons-vue";
+import 'element-plus/es/components/divider/style/css'
 import { ref } from "vue";
 
-//prompt
+// prompt
 const prompt = ref('')
 
 // model select
@@ -28,13 +29,29 @@ const goBack = () => {
 }
 
 // chat area list
-const conversations = []
+// const chatBotExample = ChatBot;
+const conversations = reactive([
+    {
+        id: 0,
+        component: '<div class="ChatBot" style="margin: 20px 0 0 0">Basic Message</div>'
+    },
+])
 
+const placeholderArea = '<div style="width: 100%; height: 20px; background-color: #8cc499; margin: 20px 0 0 0" />'
+
+function addConversation(msg) {
+    console.log(msg)
+    conversations.push({
+        id: conversations.length + 1,
+        // component: placeholderArea
+        component: placeholderArea
+    })
+}
 </script>
 
 <template>
     <div class="container basic">
-        <div class="title basic" style="border-bottom: #CFD3DC 3px solid; max-height: 40px; ">
+        <div class="title basic" style="border-bottom: #CFD3DC 3px solid; max-height: 40px;" id="header">
             <el-page-header @back="goBack" style="padding: 5px 30px 0 10px">
                 <template #content>
                     <span class="text-large font-600 mr-3" style="color: white">Chat-GPT</span>
@@ -55,11 +72,15 @@ const conversations = []
             </el-page-header>
         </div>
 
-        <div class="chatArea basic">
-
+        <div class="chatArea" id="main">
+            <el-scrollbar>
+                <div v-for="element in conversations" :key="element.id">
+                    <div v-html="element.component" />
+                </div>
+            </el-scrollbar>
         </div>
 
-        <div class="promptArea">
+        <div class="promptArea" id="footer">
             <div style="height: 15px; width: 100%"/>
             <el-row justify="space-around">
                 <el-col :span="3" style="min-width: 120px; flex-shrink: 0">
@@ -72,8 +93,7 @@ const conversations = []
                               :autosize="{ minRows: 1, maxRows: 7 }" placeholder="Prompt here"/>
                 </el-col>
                 <el-col :span="3" style="flex-shrink: 0">
-                    <el-button :icon="Position" class="btn submit basic" plain>
-                    </el-button>
+                    <el-button :icon="Position" class="btn submit basic" plain @click="addConversation(prompt)" />
                 </el-col>
             </el-row>
         </div>
@@ -94,6 +114,17 @@ const conversations = []
 }
 
 div.chatArea {
+    width: 100%;
+    --subtract-height: 110px;
+    max-height: calc(100vh - var(--subtract-height));
+}
+
+.el-scrollbar {
+    --subtract-height: 110px;
+    max-height: calc(100vh - var(--subtract-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 div.promptArea {
@@ -127,5 +158,4 @@ div.promptArea {
     color: #000000;
     background: #67C23A;
 }
-
 </style>
