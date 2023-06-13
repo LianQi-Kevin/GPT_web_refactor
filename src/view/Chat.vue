@@ -1,19 +1,10 @@
 <script setup>
 import {Delete, Download, Position, Setting} from "@element-plus/icons-vue";
-import 'element-plus/es/components/divider/style/css'
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
 // prompt
 const prompt = ref('')
 const requesting = ref(false)
-
-// model select
-const modelName = ref('GPT-3.5')
-const modelNameList = [
-    {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
-    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
-    {label: 'GPT-4-32K', value: 'gpt-4-32k'}
-]
 
 // router back
 const goBack = () => {
@@ -52,6 +43,22 @@ function addConversation(e) {
         e.preventDefault();  // 阻止浏览器默认的敲击回车换行的方法
     }
 }
+
+// 侧边栏设置列表
+const showDrawer = ref(false)
+const infoForm = reactive({
+    "model": "gpt-3.5-turbo",
+    "temperature": 0.7,
+    "top_p": 0.7,
+    "max_tokens": 2048,
+    "num_result": 1,
+    "presence_penalty": 0,
+    "frequency_penalty": 0
+})
+const modelNameList = [
+    {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
+    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
+    {label: 'GPT-4-32K', value: 'gpt-4-32k'}]
 </script>
 
 <template>
@@ -60,19 +67,6 @@ function addConversation(e) {
             <el-page-header @back="goBack" style="padding: 5px 30px 0 10px">
                 <template #content>
                     <span class="text-large font-600 mr-3" style="color: white">Chat-GPT</span>
-                </template>
-                <template #extra>
-                    <div class="flex items-center modelChoice">
-                        <label>Model : </label>
-                        <el-select v-model="modelName" class="m-2" placeholder="Model select" size="small">
-                            <el-option
-                                v-for="item in modelNameList"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            />
-                        </el-select>
-                    </div>
                 </template>
             </el-page-header>
         </div>
@@ -96,10 +90,40 @@ function addConversation(e) {
 <!--                <div v-html="element.component" />-->
 <!--            </div>-->
         </div>
+        <el-drawer v-model="showDrawer" direction="ltr" title="Model Parameter" size="300px" >
+            <div class="demo-drawer__content">
+                <el-form :model="infoForm" label-position="top">
+                    <el-form-item label="Model Name">
+                        <el-select v-model="infoForm.model" class="m-2" placeholder="Select">
+                            <el-option v-for="item in modelNameList" :key="item.value"
+                                       :label="item.label" :value="item.value"/>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="Temperature">
+                        <el-slider v-model="infoForm.temperature" :min="0" :max="2" :step="0.1"/>
+                    </el-form-item>
+                    <el-form-item label="Top-p">
+                        <el-slider v-model="infoForm.top_p" :min="0" :max="2" :step="0.1" />
+                    </el-form-item>
+                    <el-form-item label="Presence Penalty">
+                        <el-slider v-model="infoForm.presence_penalty" :min="-2" :max="2" :step="0.1"/>
+                    </el-form-item>
+                    <el-form-item label="Frequency penalty">
+                        <el-slider v-model="infoForm.frequency_penalty" :min="-2" :max="2" :step="0.1"/>
+                    </el-form-item>
+                    <el-form-item label="Max Tokens">
+                        <el-input-number v-model="infoForm.max_tokens" :min="500" :max="4000"/>
+                    </el-form-item>
+                    <el-form-item label="Num Result" disabled="true">
+                        <el-input-number v-model="infoForm.num_result" :min="1" disabled/>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-drawer>
         <div class="promptDivide" />
         <div class="promptArea">
             <div class="controlBtn">
-                <el-button :icon="Setting" class="btn" circle :disabled="requesting" />
+                <el-button :icon="Setting" class="btn" circle @click="showDrawer = true"/>
                 <el-button :icon="Download" class="btn" circle :disabled="requesting" />
                 <el-button :icon="Delete" class="btn" circle :disabled="requesting" />
             </div>
@@ -231,7 +255,7 @@ div.promptArea {
     }
 
     .submitBtn {
-        flex-basis: 100px;
+        flex-basis: 80px;
         margin: 0 30px 0 15px;
     }
 }
