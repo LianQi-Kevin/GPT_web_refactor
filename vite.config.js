@@ -7,7 +7,6 @@ import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Inspect from 'vite-plugin-inspect'
-import { VueHooksPlusResolver } from '@vue-hooks-plus/resolvers'
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -39,7 +38,6 @@ export default defineConfig({
             // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
             resolvers: [
                 ElementPlusResolver(),
-                VueHooksPlusResolver(),
 
                 // Auto import icon components
                 // 自动导入图标组件

@@ -4,7 +4,7 @@
 * maxAge: expiry time, eg: 1s, 10m, 15h, 5d, 2w, 2M, 1y
 * */
 
-import {toSeconds} from "./utils.js";
+import {toSeconds} from "../utils/durationTime.js";
 
 export function setCookie(key, value, maxAge) {
     console.debug(`set cookie ${{key: value}}`)

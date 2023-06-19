@@ -23,7 +23,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*test*
 
-# auto inport configs
+# auto import configs
 auto-imports.d.ts
 components.d.ts

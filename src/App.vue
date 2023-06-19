@@ -1,20 +1,18 @@
 <script setup>
 // import Login from "@/view/Login.vue";
 import Chat from "@/view/Chat.vue";
-// import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
     <div class="root">
-        <!--      <hello-world msg="Hello"></hello-world>-->
-<!--        <Login></Login>-->
-        <Chat></Chat>
+<!--        <Login />-->
+        <Chat />
     </div>
 </template>
 
 <style scoped>
 div.root {
-    background: gray;
+    background: #ffffff;
     width: 100vw;
     height: 100vh;
 }
