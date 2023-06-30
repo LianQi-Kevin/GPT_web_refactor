@@ -3,6 +3,7 @@ import { Refresh, Promotion, Setting, Printer } from "@element-plus/icons-vue";
 import { ref, reactive } from "vue";
 import ChatItem from "@/components/ChatItem.vue";
 import "highlight.js/styles/monokai.css"
+import {getChatGPTResponse} from "@/network/chat.js";
 
 
 // prompt
@@ -17,8 +18,17 @@ const goBack = () => {
 
 // chat area list
 const defaultSystemMsg = ref('You are a helpful assistant. In the following conversation, you need to provide information strictly according to the markdown syntax')
-const conversations = reactive([{ id: 0, role: "system", content: defaultSystemMsg.value }])
+const conversations = reactive([{ id: 0, role: "system", content: defaultSystemMsg.value, loading: false}])
 
+function restartConversation(conversations) {
+    // 重置对话列表
+    for (let i = 0; i < conversations.length; i++) {
+        if (conversations[i].role !== "system") {
+            conversations.splice(i, 1);
+            i--;
+        }
+    }
+}
 
 function notAllNewLines(str) {
     // 检查字符串是否全部由\n组成
@@ -33,14 +43,27 @@ function addConversation(e) {
     } else {
         // enter触发, 条件阻止空内容触发请求
         if (prompt.value !== "" && notAllNewLines(prompt.value)) {
-            console.log(typeof prompt.value)
-            console.log(prompt.value)
+            // 添加user
             conversations.push({
                 id: conversations.length + 1,
                 role: 'user',
-                content: prompt.value
+                content: prompt.value,
+                loading: false
             })
             prompt.value = ""   // 重置prompt的值
+            // 请求并等待
+            conversations.push({
+                id: conversations.length + 1,
+                role: 'assistant',
+                content: "Waiting...",
+                loading: true
+            })
+            getChatGPTResponse(conversations, infoForm).then(result => {
+                if (result.type === "success") {
+                    conversations.at(-1).content = result.value["messages"][0]["message"]["content"]
+                    conversations.at(-1).loading = false
+                }
+            })
         }
         e.preventDefault();  // 阻止浏览器默认的敲击回车换行的方法
     }
@@ -76,7 +99,7 @@ const modelNameList = [
         <div class="chatArea">
             <div class="conversations">
                 <div v-for="element in conversations" :key="element.id">
-                    <ChatItem :markdown="element.content" :role="element.role" />
+                    <ChatItem :markdown="element.content" :role="element.role" v-model:loading="element.loading"/>
                 </div>
             </div>
         </div>
@@ -115,7 +138,7 @@ const modelNameList = [
             <div class="controlBtn">
                 <el-button :icon="Setting" class="btn" circle @click="showDrawer = true"/>
                 <el-button :icon="Printer" class="btn" circle :disabled="requesting" />
-                <el-button :icon="Refresh" class="btn" circle :disabled="requesting" />
+                <el-button :icon="Refresh" class="btn" circle @click="restartConversation(conversations)" />
             </div>
             <div class="promptBox">
                 <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus resize="none" show-word-limit

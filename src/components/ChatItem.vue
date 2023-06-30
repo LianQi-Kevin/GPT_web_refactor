@@ -1,7 +1,7 @@
 <script setup>
 import { MarkdownToHTML } from "@/utils/MarkdownToHTML.js";
 import { getLocalTime } from "@/utils/durationTime.js"
-import { defineProps } from "vue";
+import { defineProps, defineEmits, reactive } from "vue";
 
 const props = defineProps({
     markdown: {
@@ -14,15 +14,22 @@ const props = defineProps({
         validator(value) {
             return ['user', 'system', 'assistant'].includes(value)
         }
+    },
+    loading: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
+
+defineEmits(['update:loading'])
 
 const avatarPath = {
     "user": "src/assets/svg/userAvatar.svg",
     "assistant": "src/assets/svg/assistantAvatar.svg"
 }
-//
-const itemInfo = {
+
+const itemInfo = reactive({
     // for img
     avatarAlt: props.role + "'s Avatar",
     avatarSrc: avatarPath[`${props.role}`],
@@ -35,10 +42,10 @@ const itemInfo = {
         if (props.role !== "system") {
             return MarkdownToHTML(props.markdown)
         } else {
-            return `<span><strong>System Setting</strong><br/>${props.markdown}</span>`
+            return `<span><strong style="font-size: 15px">System Setting</strong><br/>${props.markdown}</span>`
         }
     }
-}
+})
 </script>
 
 <template>
@@ -47,7 +54,20 @@ const itemInfo = {
         <img :alt=itemInfo.avatarAlt :src=itemInfo.avatarSrc class="avatar"/>
         <div class="chat">
             <div class="localTime">{{ itemInfo.localTime }}</div>
-            <div class="innerHtml" v-html="itemInfo.targetHTML()"/>
+            <div class="innerHtml">
+                <el-skeleton animated :loading="props.loading">
+                    <template #template>
+                        <div style="min-width: 60vw">
+                            <el-skeleton-item variant="text" style="width: 70%"/>
+                            <el-skeleton-item variant="text" style="width: 100%"/>
+                            <el-skeleton-item variant="text" style="width: 100%"/>
+                        </div>
+                    </template>
+                    <template #default>
+                        <div v-html="itemInfo.targetHTML()" />
+                    </template>
+                </el-skeleton>
+            </div>
         </div>
     </div>
 </template>
