@@ -95,7 +95,6 @@ const modelNameList = [
                 </template>
             </el-page-header>
         </div>
-
         <div class="chatArea">
             <div class="conversations">
                 <div v-for="element in conversations" :key="element.id">
@@ -259,14 +258,14 @@ div.promptArea {
     }
 }
 
-.el-textarea {
-    min-width: 200px;
-    max-width: 800px;
-}
+//.el-textarea {
+//    min-width: 200px;
+//    max-width: 800px;
+//}
 
-.el-row {
-    align-items: flex-end;
-}
+//.el-row {
+//    align-items: flex-end;
+//}
 
 .btn {
     color: #ffffff;
