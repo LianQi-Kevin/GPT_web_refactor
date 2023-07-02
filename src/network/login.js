@@ -2,13 +2,15 @@ import {getLocalStorage, setLocalStorage} from '../storageUtils/localStorage.js'
 import { setCookie } from "../storageUtils/cookies.js";
 import 'element-plus/es/components/message/style/css'
 import { ElMessage } from "element-plus";
-import localAxios from "./basicAPI.js"
+import LocalAxios from "./basicAPI.js"
 import {getUserInfo} from "@/network/account.js";
+
+const loginAxios = new LocalAxios
 
 export async function userLogin(username, password) {
     try {
         // user login
-        const loginResponse = await localAxios.post(
+        const loginResponse = await loginAxios.post(
             '/login', JSON.stringify({username: username, password: password})
         );
         const accessToken = loginResponse.data['data']['access_token']
@@ -44,7 +46,7 @@ export async function refreshToken() {
     const refreshToken = getLocalStorage('refresh_token')
     if (refreshToken !== null) {
         try {
-            const response = await localAxios.post(
+            const response = await loginAxios.post(
                 '/refresh', '', {headers: {'Authorization': `Bearer ${refreshToken}`}}
             )
             const accessToken = response.data['data']['access_token']

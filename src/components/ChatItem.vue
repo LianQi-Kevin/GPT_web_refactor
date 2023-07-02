@@ -1,7 +1,7 @@
 <script setup>
 import { MarkdownToHTML } from "@/utils/MarkdownToHTML.js";
 import { getLocalTime } from "@/utils/durationTime.js"
-import { defineEmits, reactive } from "vue";
+import { reactive } from "vue";
 
 const props = defineProps({
     markdown: {

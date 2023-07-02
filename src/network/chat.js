@@ -1,5 +1,9 @@
-import localAxios from "./basicAPI.js"
+import LocalAxios from "./basicAPI.js"
 import {ElMessage} from "element-plus";
+import {accessTokenAdd} from "@/network/interceptors.js";
+
+const chatAxios = new LocalAxios()
+chatAxios.interceptors.request.use(accessTokenAdd)
 
 export async function getChatGPTResponse(conversations, configs) {
     try{
@@ -14,14 +18,16 @@ export async function getChatGPTResponse(conversations, configs) {
             frequency_penalty: configs.frequency_penalty
         }
 
-        // 在开发环境下暂时禁用实际请求以节省token
+        /* 在开发环境下暂时禁用实际请求以节省token */
         // if (process.env.NODE_ENV === "development") {
         //     return {type: 'success', value: {messages: [{message: {content: "yes"}}]}}
         // }
 
-        const chatGPTResponse = await localAxios.post(
+        // 添加请求拦截器并创建请求
+        const chatGPTResponse = await chatAxios.post(
             '/chat/azure', JSON.stringify(requestJson)
         )
+
         return {type: 'success', value: chatGPTResponse.data["data"]}
     } catch (err) {
         ElMessage({
