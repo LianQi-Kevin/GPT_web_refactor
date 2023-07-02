@@ -4,16 +4,17 @@ import { ref, reactive } from "vue";
 import ChatItem from "@/components/ChatItem.vue";
 import "highlight.js/styles/monokai.css"
 import {getChatGPTResponse} from "@/network/chat.js";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 
 // prompt
 const prompt = ref('')
 const requesting = ref(false)
 
 // router back
-// todo: switch router back
 const goBack = () => {
-    console.log('go back')
+    router.back()
 }
 
 // chat area list
