@@ -29,8 +29,10 @@ export async function userLogin(username, password) {
             message: 'Successful Login, jumping',
             duration: 3000
         })
+
         return {type: 'success', value: userInfo.data['data']}
     } catch (err) {
+        console.error(err)
         ElMessage({
             type: 'error',
             message: err.response.data['message'],

@@ -49,10 +49,10 @@ function login(loginForm) {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 div.container {
     // color
-    background: #ffffff;
+    //background: #ffffff;
 
     // container center
     position: absolute;

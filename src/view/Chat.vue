@@ -17,7 +17,7 @@ const goBack = () => {
 }
 
 // chat area list
-const defaultSystemMsg = ref('You are a helpful assistant. In the following conversation, you need to provide information strictly according to the markdown syntax')
+const defaultSystemMsg = ref('You are a helpful assistant.')
 const conversations = reactive([{ id: 0, role: "system", content: defaultSystemMsg.value, loading: false}])
 
 function restartConversation(conversations) {
@@ -103,37 +103,6 @@ const modelNameList = [
                 </div>
             </div>
         </div>
-        <el-drawer v-model="showDrawer" direction="ltr" title="Model Parameter" size="300px" >
-            <div class="demo-drawer__content">
-                <el-form :model="infoForm" label-position="top">
-                    <el-form-item label="Model Name">
-                        <el-select v-model="infoForm.model" class="m-2" placeholder="Select">
-                            <el-option v-for="item in modelNameList" :key="item.value"
-                                       :label="item.label" :value="item.value"/>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="Temperature">
-                        <el-slider v-model="infoForm.temperature" :min="0" :max="2" :step="0.1"/>
-                    </el-form-item>
-                    <el-form-item label="Top-p">
-                        <el-slider v-model="infoForm.top_p" :min="0" :max="2" :step="0.1" />
-                    </el-form-item>
-                    <el-form-item label="Presence Penalty">
-                        <el-slider v-model="infoForm.presence_penalty" :min="-2" :max="2" :step="0.1"/>
-                    </el-form-item>
-                    <el-form-item label="Frequency penalty">
-                        <el-slider v-model="infoForm.frequency_penalty" :min="-2" :max="2" :step="0.1"/>
-                    </el-form-item>
-                    <el-form-item label="Max Response Tokens">
-                        <el-input-number v-model="infoForm.max_response_tokens" :min="500" :max="4000"/>
-                    </el-form-item>
-                    <el-form-item label="Num Result" disabled="true">
-                        <el-input-number v-model="infoForm.num_result" :min="1" disabled/>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </el-drawer>
-        <div class="promptDivide" />
         <div class="promptArea">
             <div class="controlBtn">
                 <el-button :icon="Setting" class="btn" circle @click="showDrawer = true"/>
@@ -149,6 +118,38 @@ const modelNameList = [
                 <el-button :icon="Promotion" class="basic" type="success" plain @click="addConversation" />
             </div>
         </div>
+        <div class="other" style="position: absolute">
+            <el-drawer v-model="showDrawer" direction="ltr" title="Model Parameter" size="300px" >
+                <div class="demo-drawer__content">
+                    <el-form :model="infoForm" label-position="top">
+                        <el-form-item label="Model Name">
+                            <el-select v-model="infoForm.model" class="m-2" placeholder="Select">
+                                <el-option v-for="item in modelNameList" :key="item.value"
+                                           :label="item.label" :value="item.value"/>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="Temperature">
+                            <el-slider v-model="infoForm.temperature" :min="0" :max="2" :step="0.1"/>
+                        </el-form-item>
+                        <el-form-item label="Top-p">
+                            <el-slider v-model="infoForm.top_p" :min="0" :max="2" :step="0.1" />
+                        </el-form-item>
+                        <el-form-item label="Presence Penalty">
+                            <el-slider v-model="infoForm.presence_penalty" :min="-2" :max="2" :step="0.1"/>
+                        </el-form-item>
+                        <el-form-item label="Frequency penalty">
+                            <el-slider v-model="infoForm.frequency_penalty" :min="-2" :max="2" :step="0.1"/>
+                        </el-form-item>
+                        <el-form-item label="Max Response Tokens">
+                            <el-input-number v-model="infoForm.max_response_tokens" :min="500" :max="4000"/>
+                        </el-form-item>
+                        <el-form-item label="Num Result" disabled="true">
+                            <el-input-number v-model="infoForm.num_result" :min="1" disabled/>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </el-drawer>
+        </div>
     </div>
 </template>
 
@@ -160,12 +161,22 @@ const modelNameList = [
 
 .container {
     min-height: 100vh;
+    max-height: 100vh;
     background: #3a3a3a;
     //background: #18222c;
     border-radius: 0;
+
+    // for inner item
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 div.chatArea {
+    // for site
+    flex-grow: 2;
+
+    // for inner item
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -181,20 +192,13 @@ div.chatArea {
         overflow: auto;
     }
 }
-div.promptDivide {
-    position: absolute;
-    width: 100%;
-    bottom: 60px;
-    border-top: white 3px solid;
-}
 
 div.promptArea {
-    // absolute position
-    position: absolute;
-    bottom: 15px;
+    //bottom: 15px;
     width: 100%;
     min-height: 50px;
     max-height: 200px;
+    margin-bottom: 20px;
 
     // flex item
     display: flex;
@@ -228,11 +232,6 @@ div.promptArea {
 @media screen and (max-width: 544px) {
     div.chatArea {
         --subtract-height: 160px;
-    }
-
-    div.promptDivide {
-        bottom: 100px;
-        //display: none;
     }
 
     div.promptArea {

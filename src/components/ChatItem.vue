@@ -1,7 +1,7 @@
 <script setup>
 import { MarkdownToHTML } from "@/utils/MarkdownToHTML.js";
 import { getLocalTime } from "@/utils/durationTime.js"
-import { defineProps, defineEmits, reactive } from "vue";
+import { defineEmits, reactive } from "vue";
 
 const props = defineProps({
     markdown: {
@@ -39,10 +39,12 @@ const itemInfo = reactive({
     localTime: getLocalTime(),
     // Markdown text to html
     targetHTML: () => {
-        if (props.role !== "system") {
+        if (props.role === "assistant") {
             return MarkdownToHTML(props.markdown)
-        } else {
+        } else if (props.role === "system") {
             return `<span><strong style="font-size: 15px">System Setting</strong><br/>${props.markdown}</span>`
+        } else if (props.role === "user") {
+            return MarkdownToHTML(props.markdown)
         }
     }
 })
@@ -115,6 +117,7 @@ const itemInfo = reactive({
         }
 
         .innerHtml {
+            word-break: break-all; // 要求强制换行
             border: #6C6E72 2px solid;
             border-radius: 10px 2px 10px 10px;
         }
@@ -143,6 +146,8 @@ const itemInfo = reactive({
     margin: 0 auto;
     padding: 7px;
     flex-direction: column;
+    // 禁用系统信息显示
+    display: none;
 
     .avatar {
         display: none;

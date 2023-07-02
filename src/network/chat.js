@@ -13,6 +13,12 @@ export async function getChatGPTResponse(conversations, configs) {
             presence_penalty: configs.presence_penalty,
             frequency_penalty: configs.frequency_penalty
         }
+
+        // 在开发环境下暂时禁用实际请求以节省token
+        if (process.env.NODE_ENV === "development") {
+            return {type: 'success', value: {messages: [{message: {content: "yes"}}]}}
+        }
+
         const chatGPTResponse = await localAxios.post(
             '/chat/azure', JSON.stringify(requestJson)
         )
