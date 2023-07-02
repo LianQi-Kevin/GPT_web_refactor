@@ -8,7 +8,7 @@ export function setLocalStorage(key, value, expiry) {
         item.expiry = now.setTime(now.getTime() + toMilliSeconds(expiry))
     }
     localStorage.setItem(key, JSON.stringify(item))
-    console.debug(`set localStorage ${item}`)
+    console.debug(`set localStorage ${JSON.stringify(item)}`)
     return item
 }
 

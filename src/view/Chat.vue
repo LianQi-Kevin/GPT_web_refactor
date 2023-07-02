@@ -12,11 +12,6 @@ const router = useRouter()
 const prompt = ref('')
 const requesting = ref(false)
 
-// router back
-const goBack = () => {
-    router.back()
-}
-
 // chat area list
 const defaultSystemMsg = ref('You are a helpful assistant.')
 const conversations = reactive([{ id: 0, role: "system", content: defaultSystemMsg.value, loading: false}])
@@ -90,7 +85,7 @@ const modelNameList = [
 <template>
     <div class="container basic">
         <div class="title basic" style="border-bottom: #CFD3DC 3px solid; max-height: 40px;">
-            <el-page-header @back="goBack" style="padding: 5px 30px 0 10px">
+            <el-page-header @back="() => {router.back()}" style="padding: 5px 30px 0 10px">
                 <template #content>
                     <span class="text-large font-600 mr-3" style="color: white">Chat-GPT</span>
                 </template>

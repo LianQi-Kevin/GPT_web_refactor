@@ -31,7 +31,7 @@ function login(loginForm) {
     // login axios
     userLogin(loginForm.username, loginForm.password).then(result => {
         if (result.type === "success") {
-            router.push('/chat')
+            router.push('/home')
         } else {
             console.error(result)
         }

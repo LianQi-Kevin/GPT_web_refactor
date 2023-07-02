@@ -2,15 +2,8 @@
 </script>
 
 <template>
-    <div class="root">
-        <router-view />
-    </div>
+    <router-view />
 </template>
 
 <style scoped>
-div.root {
-    //background: #ffffff;
-    //width: 100vw;
-    //height: 100vh;
-}
 </style>
