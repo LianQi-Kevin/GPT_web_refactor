@@ -46,3 +46,7 @@ export function toSeconds(time) {
 export function toMilliSeconds(time) {
     return durationTime(time).asMilliseconds()
 }
+
+export function getLocalTime() {
+    return new Date().toLocaleString('zh-CN', { hour12: false })
+}

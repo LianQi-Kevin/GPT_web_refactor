@@ -1,4 +1,4 @@
-import {toMilliSeconds} from "./utils.js"
+import {toMilliSeconds} from "../utils/durationTime.js"
 
 export function setLocalStorage(key, value, expiry) {
     /* 设置localStorage键值对，expiry为过期时间(从当前时间起算, UTC时间) */

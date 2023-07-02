@@ -13,10 +13,16 @@
     "@vueuse/core": "^10.1.2",
     "animate.css": "^4.1.1",
     "axios": "^1.4.0",
+    "dompurify": "^3.0.3",
     "element-plus": "^2.3.6",
+    "highlight.js": "^11.8.0",
+    "marked": "^5.1.0",
+    "marked-extended-tables": "^1.0.6",
+    "marked-highlight": "^2.0.1",
+    "marked-katex-extension": "^2.1.0",
+    "marked-xhtml": "^1.0.1",
     "moment": "^2.29.4",
-    "vue": "^3.2.47",
-    "vue-hooks-plus": "^1.7.4"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
