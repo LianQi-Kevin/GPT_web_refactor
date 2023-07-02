@@ -22,7 +22,8 @@
     "marked-katex-extension": "^2.1.0",
     "marked-xhtml": "^1.0.1",
     "moment": "^2.29.4",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

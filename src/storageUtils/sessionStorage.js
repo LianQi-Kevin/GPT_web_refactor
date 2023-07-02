@@ -8,7 +8,7 @@ export function setSessionStorage(key, value, expiry) {
         item.expiry = now.setTime(now.getTime() + toMilliSeconds(expiry))
     }
     sessionStorage.setItem(key, JSON.stringify(item))
-    console.debug(`set sessionStorage ${item}`)
+    console.debug(`set sessionStorage ${JSON.stringify(item)}`)
     return item
 }
 
@@ -21,7 +21,7 @@ export function getSessionStorage(key) {
     if (typeof item.expiry !== "undefined") {
         const now = new Date()
         if (now.getTime() > item.expiry) {
-            localStorage.removeItem(key)
+            sessionStorage.removeItem(key)
             return null
         }
     }

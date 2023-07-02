@@ -1,9 +1,9 @@
-import { setLocalStorage } from '../storageUtils/localStorage.js'
+import {getLocalStorage, setLocalStorage} from '../storageUtils/localStorage.js'
 import { setCookie } from "../storageUtils/cookies.js";
-import { setSessionStorage } from "../storageUtils/sessionStorage.js";
 import 'element-plus/es/components/message/style/css'
 import { ElMessage } from "element-plus";
 import localAxios from "./basicAPI.js"
+import {getUserInfo} from "@/network/account.js";
 
 export async function userLogin(username, password) {
     try {
@@ -15,22 +15,19 @@ export async function userLogin(username, password) {
         const refreshToken = loginResponse.data['data']['refresh_token']
 
         // login successful, get user info
-        const userInfo = await localAxios.get(
-            '/account', {headers: {'Authorization': `Bearer ${accessToken}`}}
-        )
+        const userInfo = await getUserInfo(accessToken)
 
         // set info to storage
         setLocalStorage('refresh_token', refreshToken,
-            userInfo.data['data']['role'] === 'admin' ? '3d' : '15d')
+            userInfo.value['role'] === 'admin' ? '3d' : '15d')
         setCookie('jwt_token', accessToken, '14m')
-        setSessionStorage('user_info', userInfo.data['data'])
         ElMessage({
             type: 'success',
-            message: 'Successful Login, jumping',
+            message: 'Successful Login, Jumping...',
             duration: 3000
         })
 
-        return {type: 'success', value: userInfo.data['data']}
+        return {type: 'success', value: userInfo.value}
     } catch (err) {
         console.error(err)
         ElMessage({
@@ -40,5 +37,24 @@ export async function userLogin(username, password) {
             showClose: true
         })
         return {type: 'error', value: err}
+    }
+}
+
+export async function refreshToken() {
+    const refreshToken = getLocalStorage('refresh_token')
+    if (refreshToken !== null) {
+        try {
+            const response = await localAxios.post(
+                '/refresh', '', {headers: {'Authorization': `Bearer ${refreshToken}`}}
+            )
+            const accessToken = response.data['data']['access_token']
+            setCookie('jwt_token', accessToken, '14m')
+            return {type: 'success', value: accessToken}
+        } catch (err) {
+            console.error(err.data)
+            return {type: 'error', value: err}
+        }
+    } else {
+        return {type: 'error', value: 'Not found refresh token'}
     }
 }

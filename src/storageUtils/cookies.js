@@ -7,7 +7,7 @@
 import {toSeconds} from "../utils/durationTime.js";
 
 export function setCookie(key, value, maxAge) {
-    console.debug(`set cookie ${{key: value}}`)
+    console.debug(`set cookie {${key}: ${value}}`)
     if (maxAge !== undefined){
         document.cookie = key + '=' + value + '; max-age=' + toSeconds(maxAge) + "; path=/"
     } else {

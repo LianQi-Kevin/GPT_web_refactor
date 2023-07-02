@@ -2,7 +2,9 @@
 import { reactive, ref } from "vue";
 import { Eleme } from "@element-plus/icons-vue";
 import { userLogin } from "@/network/login.js";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 let loginBtnLoading = ref(false)
 
 // 登录信息
@@ -27,7 +29,13 @@ function login(loginForm) {
     loginBtnLoading.value = true
     setTimeout(() => {loginBtnLoading.value = false}, 5000)
     // login axios
-    userLogin(loginForm.username, loginForm.password).then(result => {console.log(result)})
+    userLogin(loginForm.username, loginForm.password).then(result => {
+        if (result.type === "success") {
+            router.push('/home')
+        } else {
+            console.error(result)
+        }
+    })
 }
 </script>
 
