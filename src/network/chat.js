@@ -32,7 +32,7 @@ export async function getChatGPTResponse(conversations, configs) {
     } catch (err) {
         ElMessage({
             type: 'error',
-            message: err.response.data['message'],
+            message: err.response.data,
             duration: 5000,
             showClose: true
         })

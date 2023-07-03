@@ -8,15 +8,15 @@ export function accessTokenAdd(config) {
     // 如果access_token过期, 则刷新access_token
     if (accessToken === null) {
         refreshToken().then(result => {
-            // 处理未成功获取refresh_token
             if (result.type !== 'success') {
                 ElMessage({
                     type: 'error',
                     message: 'Login invalid, Please login again!',
                     duration: 3000
                 })
+            } else {
+                accessToken = result.value
             }
-            accessToken = result.value
         })
     }
     config.headers.Authorization = `Bearer ${accessToken}`
