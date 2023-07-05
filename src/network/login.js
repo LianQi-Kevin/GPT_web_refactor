@@ -51,9 +51,10 @@ export async function refreshToken() {
             setCookie('jwt_token', response.data['data']['access_token'], '14m')
             return {type: 'success', value: response.data['data']['access_token']}
         } catch (err) {
+            localStorage.removeItem('refresh_token')
             return {type: 'error', value: false, msg: 'refreshToken invalid, Please login again'}
         }
     } else {
-        return {type: 'error', value: false, msg: 'refreshToken Not Found, Please login again'}
+        return {type: 'error', value: false, msg: 'refreshToken Not Found, Please login'}
     }
 }

@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
 
 // 根据meta.title修改页面标题
 // router.afterEach 全局后置守卫, 导航结束后执行
-router.afterEach((to, from) => {
+router.afterEach((to) => {
     // 如果routes的meta中定义了title，则修改页面title
     if (to.meta['title']) {
         document.title = to.meta['title'];

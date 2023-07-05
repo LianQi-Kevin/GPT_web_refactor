@@ -3,11 +3,11 @@ import {refreshToken} from "@/network/login.js";
 import {getLocalStorage} from "@/storageUtils/localStorage.js";
 import {ElMessage} from "element-plus";
 
-export function accessTokenAdd(config) {
+export async function accessTokenAdd(config) {
     let accessToken = getCookie('jwt_token');
     // 如果access_token过期, 则刷新access_token
     if (accessToken === null) {
-        refreshToken().then(result => {
+        await refreshToken().then(result => {
             if (result.type !== 'success') {
                 ElMessage({
                     type: 'error',

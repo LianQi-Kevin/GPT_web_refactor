@@ -20,7 +20,7 @@ export async function getChatGPTResponse(conversations, configs) {
 
         /* 在开发环境下暂时禁用实际请求以节省token */
         // if (process.env.NODE_ENV === "development") {
-        //     return {type: 'success', value: {messages: [{message: {content: "yes"}}]}}
+        //     return {type: 'success', value: {messages: [{message: {content: `${JSON.stringify(requestJson)}}`}}]}}
         // }
 
         // 添加请求拦截器并创建请求
@@ -32,7 +32,7 @@ export async function getChatGPTResponse(conversations, configs) {
     } catch (err) {
         ElMessage({
             type: 'error',
-            message: err.response.data,
+            message: err.response.message,
             duration: 5000,
             showClose: true
         })
