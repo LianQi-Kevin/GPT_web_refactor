@@ -1,6 +1,13 @@
 <script setup>
 import {useRouter} from "vue-router";
+import {refreshToken} from "@/network/login.js";
 const router = useRouter()
+
+function verify() {
+    const data = refreshToken()
+    console.log(data)
+}
+
 </script>
 
 <template>
@@ -10,6 +17,7 @@ const router = useRouter()
             <el-button @click="() => {router.push('login')}" size="large">To Login</el-button>
             <el-button @click="() => {router.push('chat')}" size="large">To AzureChatGPT</el-button>
             <el-button @click="() => {router.push('/error/404')}" size="large">To 404NotFound</el-button>
+            <el-button @click="() => {verify()}" size="large">Verify refreshToken</el-button>
         </el-button-group>
     </div>
 </template>

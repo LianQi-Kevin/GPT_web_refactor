@@ -78,7 +78,7 @@ const infoForm = reactive({
 })
 const modelNameList = [
     {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
-    {label: 'GPT-4-8k', value: 'gpt-4'},
+    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
     {label: 'GPT-4-32K', value: 'gpt-4-32k'}]
 </script>
 

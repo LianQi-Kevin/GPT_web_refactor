@@ -1,7 +1,7 @@
 <script setup>
 import { MarkdownToHTML } from "@/utils/MarkdownToHTML.js";
 import { getLocalTime } from "@/utils/durationTime.js"
-import { defineEmits, reactive } from "vue";
+import { reactive } from "vue";
 
 const props = defineProps({
     markdown: {
@@ -136,6 +136,7 @@ const itemInfo = reactive({
         }
 
         .innerHtml {
+            word-break: break-all; // 要求强制换行
             border: #6C6E72 2px solid;
             border-radius: 2px 10px 10px 10px;
         }
