@@ -10,6 +10,18 @@ const router = useRouter()
 // chat area list
 const conversations = reactive([{id: 0, role: "system", content: 'You are a helpful assistant.', loading: false}])
 
+// scrollbar
+const scrollbarRef = ref()
+const conversationsRef = ref()
+
+onMounted(() => {
+    watch(conversations, () => {
+        nextTick(() => {
+            scrollbarRef.value.setScrollTop(conversationsRef.value.clientHeight)
+        })
+    })
+})
+
 // 侧边栏设置列表
 const showParameter = ref(false)
 </script>
@@ -25,11 +37,13 @@ const showParameter = ref(false)
                 </el-page-header>
             </div>
             <div class="chatArea">
-                <div class="conversations">
-                    <div v-for="element in conversations" :key="element.id">
-                        <ChatItem v-model:loading="element.loading" :markdown="element.content" :role="element.role"/>
+                <el-scrollbar style="width: 100%" :noresize="false" ref="scrollbarRef">
+                    <div class="conversations" ref="conversationsRef">
+                        <div v-for="element in conversations" :key="element.id">
+                            <ChatItem v-model:loading="element.loading" :markdown="element.content" :role="element.role"/>
+                        </div>
                     </div>
-                </div>
+                </el-scrollbar>
             </div>
             <PromptArea v-model:conversations="conversations" v-model:show-parameter="showParameter"/>
         </div>
@@ -63,7 +77,7 @@ const showParameter = ref(false)
 
         background: #3a3a3a;
         border-radius: 10px;
-        border: white solid 1px;
+        border: #796868 solid 1px;
 
         // for inner item
         display: flex;
@@ -80,7 +94,7 @@ const showParameter = ref(false)
             align-items: flex-start;
             justify-content: flex-start;
             width: 100%;
-            overflow: auto;
+            overflow-y: auto;
 
             .conversations {
                 width: 100%;

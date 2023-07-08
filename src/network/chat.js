@@ -18,7 +18,11 @@ export async function getChatGPTResponse(conversations, configs) {
             frequency_penalty: configs.frequency_penalty
         }
 
-        // 添加请求拦截器并创建请求
+        // if (process.env.NODE_ENV === "development") {
+        //     return {type: 'success', value: {messages: [{message: {content: conversations.at(-2).content}}]}}
+        // }
+
+        // 创建请求
         const chatGPTResponse = await chatAxios.post(
             '/chat/azure', JSON.stringify(requestJson)
         )
