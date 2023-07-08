@@ -13,24 +13,20 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     // 前置鉴权
     if (to.meta['requiresAuth']) {
-        if (process.env.NODE_ENV !== "development") {
-            // 获取refresh token
-            refreshToken().then(result => {
-                if (result.type === 'success') {
-                    next()
-                } else {
-                    ElMessage({
-                        type: 'error',
-                        message: result.msg,
-                        duration: 5000,
-                        showClose: true
-                    })
-                    next('/login')
-                }
-            })
-        } else {
-            next();
-        }
+        // 获取refresh token
+        refreshToken().then(result => {
+            if (result.type === 'success') {
+                next()
+            } else {
+                ElMessage({
+                    type: 'error',
+                    message: result.msg,
+                    duration: 5000,
+                    showClose: true
+                })
+                next('/login')
+            }
+        })
     } else {
         next(); // 无需鉴权, 直接放行
     }

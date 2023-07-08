@@ -45,7 +45,7 @@ const showParameter = ref(false)
                     </div>
                 </el-scrollbar>
             </div>
-            <PromptArea v-model:conversations="conversations" v-model:show-parameter="showParameter"/>
+            <PromptArea v-model:conversations="conversations" />
         </div>
     </div>
 </template>

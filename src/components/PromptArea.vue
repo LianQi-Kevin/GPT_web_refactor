@@ -1,5 +1,5 @@
 <script setup>
-import {Printer, Promotion, Refresh, Setting} from "@element-plus/icons-vue";
+import {Promotion, Refresh} from "@element-plus/icons-vue";
 import {getChatGPTResponse} from "@/network/chat.js";
 import {reactive, ref} from "vue";
 
@@ -9,14 +9,9 @@ const props = defineProps({
         type: Object,
         required: true,
         default: [{id: 1, role: 'system', content: 'You are a helpful assistant.', loading: false}]
-    },
-    showParameter: {
-        type: Boolean,
-        required: true,
-        default: false
     }
 })
-defineEmits(['update:conversations', 'update:showParameter'])
+defineEmits(['update:conversations'])
 
 const prompt = ref('')
 
@@ -69,12 +64,6 @@ function restartConversation() {
     }
 }
 
-const modelNameList = [
-    {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
-    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
-    {label: 'GPT-4-32K', value: 'gpt-4-32k'}
-]
-
 // 模型设置
 const infoForm = reactive({
     "model": 'gpt-3.5-turbo',
@@ -85,55 +74,31 @@ const infoForm = reactive({
     "presence_penalty": 0,
     "frequency_penalty": 0
 })
+
+// 输入框获得焦点
+const inputRef = ref()
+onMounted(() => {
+    watch(props.conversations, () => {
+        nextTick(() =>{
+            inputRef.value.focus()
+        })
+    })
+})
 </script>
 
 <template>
     <div class="PromptArea">
         <div class="controlBtn">
-            <el-button :icon="Setting" class="btn" circle @click="showParameter = true"/>
-            <el-button :icon="Printer" class="btn" circle style="display: none"/>
-            <el-button :icon="Refresh" class="btn" circle @click="restartConversation(conversations)" />
+            <el-button :icon="Refresh" class="btn" @click="restartConversation(conversations)" type="primary" round>New</el-button>
         </div>
         <div class="promptBox">
-            <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus resize="none"
+            <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus resize="none" show-word-limit
                       @keydown.enter.native="addConversation" :autosize="{ minRows: 1, maxRows: 6 }"
-                      placeholder="随便说些什么吧... ( ctrl + enter 换行)"/>
+                      placeholder="随便说些什么吧... ( ctrl + enter 换行)" ref="inputRef"/>
         </div>
         <div class="submitBtn">
-            <el-button :icon="Promotion" class="basic" type="success" plain @click="addConversation" />
+            <el-button :icon="Promotion" class="basic" type="success" plain @click="addConversation">Send</el-button>
         </div>
-    </div>
-    <div class="Setting" style="position: absolute">
-        <el-drawer v-model="props.showParameter" direction="ltr" title="Model Parameter" size="300px" >
-            <div class="demo-drawer__content">
-                <el-form :model="infoForm" label-position="top">
-                    <el-form-item label="Model Name">
-                        <el-select v-model="infoForm.model" class="m-2" placeholder="Select">
-                            <el-option v-for="item in modelNameList" :key="item.value"
-                                       :label="item.label" :value="item.value"/>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="Temperature">
-                        <el-slider v-model="infoForm.temperature" :min="0" :max="2" :step="0.1"/>
-                    </el-form-item>
-                    <el-form-item label="Top-p">
-                        <el-slider v-model="infoForm.top_p" :min="0" :max="2" :step="0.1" />
-                    </el-form-item>
-                    <el-form-item label="Presence Penalty">
-                        <el-slider v-model="infoForm.presence_penalty" :min="-2" :max="2" :step="0.1"/>
-                    </el-form-item>
-                    <el-form-item label="Frequency penalty">
-                        <el-slider v-model="infoForm.frequency_penalty" :min="-2" :max="2" :step="0.1"/>
-                    </el-form-item>
-                    <el-form-item label="Max Response Tokens">
-                        <el-input-number v-model="infoForm.max_response_tokens" :min="500" :max="4000"/>
-                    </el-form-item>
-                    <el-form-item label="Num Result" disabled="true">
-                        <el-input-number v-model="infoForm.num_result" :min="1" disabled/>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </el-drawer>
     </div>
 </template>
 
@@ -151,7 +116,9 @@ const infoForm = reactive({
     margin-bottom: 20px;
 
     .controlBtn {
-        flex-basis: 100px;
+        flex-basis: 85px;
+        margin-right: 15px;
+        margin-left: 30px;
     }
 
     .promptBox {
@@ -172,7 +139,7 @@ const infoForm = reactive({
 }
 
 // For Mobile
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 540px) {
     .PromptArea {
         display: flex;
         flex-direction: column;
