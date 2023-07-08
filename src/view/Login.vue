@@ -81,7 +81,6 @@ div.container {
 }
 
 .el-button {
-    //width: 47%;
     width: 100%;
 }
 

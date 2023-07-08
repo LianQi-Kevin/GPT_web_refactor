@@ -21,6 +21,5 @@ marked.use(markedHighlight({
 }));
 
 export function MarkdownToHTML(text) {
-    console.log(marked.parse(text))
     return DOMPurify().sanitize(marked.parse(text));
 }

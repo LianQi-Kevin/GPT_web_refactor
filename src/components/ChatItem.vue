@@ -78,7 +78,7 @@ const itemInfo = reactive({
 // basic
 .chatBlock {
     display: flex;
-    max-width: 80vw;
+    max-width: 80%;
 
     .avatar {
         margin-top: 5px;
