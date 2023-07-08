@@ -89,7 +89,7 @@ onMounted(() => {
 <template>
     <div class="PromptArea">
         <div class="controlBtn">
-            <el-button :icon="Refresh" class="btn" @click="restartConversation(conversations)" type="primary" round>New</el-button>
+            <el-button :icon="Refresh" class="btn" @click="restartConversation(conversations)" type="primary" round></el-button>
         </div>
         <div class="promptBox">
             <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus resize="none" show-word-limit
@@ -97,7 +97,7 @@ onMounted(() => {
                       placeholder="随便说些什么吧... ( ctrl + enter 换行)" ref="inputRef"/>
         </div>
         <div class="submitBtn">
-            <el-button :icon="Promotion" class="basic" type="success" plain @click="addConversation">Send</el-button>
+            <el-button :icon="Promotion" class="basic" type="success" plain @click="addConversation"></el-button>
         </div>
     </div>
 </template>
@@ -116,7 +116,7 @@ onMounted(() => {
     margin-bottom: 20px;
 
     .controlBtn {
-        flex-basis: 85px;
+        flex-basis: 40px;
         margin-right: 15px;
         margin-left: 30px;
     }

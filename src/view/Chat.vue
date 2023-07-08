@@ -30,11 +30,7 @@ const showParameter = ref(false)
     <div class="outside basic">
         <div class="container basic">
             <div class="title basic" style="border-bottom: #CFD3DC 3px solid; max-height: 40px;">
-                <el-page-header style="padding: 5px 30px 0 10px" @back="() => {router.back()}">
-                    <template #content>
-                        <span class="text-large font-600 mr-3" style="color: white">Chat-GPT</span>
-                    </template>
-                </el-page-header>
+                <p>ChatGPT</p>
             </div>
             <div class="chatArea">
                 <el-scrollbar style="width: 100%" :noresize="false" ref="scrollbarRef">
@@ -83,6 +79,16 @@ const showParameter = ref(false)
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+
+        .title {
+            text-align: left;
+            p {
+                margin-top: 10px;
+                font-size: 18px;
+                margin-left: 30px;
+                margin-bottom: 0;
+            }
+        }
 
         .chatArea {
             // for site
