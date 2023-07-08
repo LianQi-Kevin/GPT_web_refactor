@@ -1,5 +1,5 @@
 <script setup>
-import {Promotion} from "@element-plus/icons-vue";
+import {Printer, Promotion, Refresh, Setting} from "@element-plus/icons-vue";
 import {getChatGPTResponse} from "@/network/chat.js";
 import {reactive, ref} from "vue";
 
@@ -9,9 +9,14 @@ const props = defineProps({
         type: Object,
         required: true,
         default: [{id: 1, role: 'system', content: 'You are a helpful assistant.', loading: false}]
+    },
+    showParameter: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
-defineEmits(['update:conversations'])
+defineEmits(['update:conversations', 'update:showParameter'])
 
 const prompt = ref('')
 
@@ -64,10 +69,15 @@ function restartConversation() {
     }
 }
 
-// 侧边栏设置
-const showDrawer = ref(false)
+const modelNameList = [
+    {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
+    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
+    {label: 'GPT-4-32K', value: 'gpt-4-32k'}
+]
+
+// 模型设置
 const infoForm = reactive({
-    "model": "gpt-3.5-turbo",
+    "model": 'gpt-3.5-turbo',
     "temperature": 1,
     "top_p": 1,
     "max_response_tokens": 2048,
@@ -78,16 +88,120 @@ const infoForm = reactive({
 </script>
 
 <template>
-    <div class="promptBox">
-        <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus resize="none" show-word-limit
-                  @keydown.enter.native="addConversation" :autosize="{ minRows: 1, maxRows: 10 }"
-                  placeholder="随便说些什么吧... ( ctrl + enter 换行)"/>
+    <div class="PromptArea">
+        <div class="controlBtn">
+            <el-button :icon="Setting" class="btn" circle @click="showParameter = true"/>
+            <el-button :icon="Printer" class="btn" circle style="display: none"/>
+            <el-button :icon="Refresh" class="btn" circle @click="restartConversation(conversations)" />
+        </div>
+        <div class="promptBox">
+            <el-input type="textarea" v-model="prompt" maxlength="2000" autofocus resize="none"
+                      @keydown.enter.native="addConversation" :autosize="{ minRows: 1, maxRows: 6 }"
+                      placeholder="随便说些什么吧... ( ctrl + enter 换行)"/>
+        </div>
+        <div class="submitBtn">
+            <el-button :icon="Promotion" class="basic" type="success" plain @click="addConversation" />
+        </div>
     </div>
-    <div class="submitBtn">
-        <el-button :icon="Promotion" class="basic" type="success" plain @click="addConversation" />
+    <div class="Setting" style="position: absolute">
+        <el-drawer v-model="props.showParameter" direction="ltr" title="Model Parameter" size="300px" >
+            <div class="demo-drawer__content">
+                <el-form :model="infoForm" label-position="top">
+                    <el-form-item label="Model Name">
+                        <el-select v-model="infoForm.model" class="m-2" placeholder="Select">
+                            <el-option v-for="item in modelNameList" :key="item.value"
+                                       :label="item.label" :value="item.value"/>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="Temperature">
+                        <el-slider v-model="infoForm.temperature" :min="0" :max="2" :step="0.1"/>
+                    </el-form-item>
+                    <el-form-item label="Top-p">
+                        <el-slider v-model="infoForm.top_p" :min="0" :max="2" :step="0.1" />
+                    </el-form-item>
+                    <el-form-item label="Presence Penalty">
+                        <el-slider v-model="infoForm.presence_penalty" :min="-2" :max="2" :step="0.1"/>
+                    </el-form-item>
+                    <el-form-item label="Frequency penalty">
+                        <el-slider v-model="infoForm.frequency_penalty" :min="-2" :max="2" :step="0.1"/>
+                    </el-form-item>
+                    <el-form-item label="Max Response Tokens">
+                        <el-input-number v-model="infoForm.max_response_tokens" :min="500" :max="4000"/>
+                    </el-form-item>
+                    <el-form-item label="Num Result" disabled="true">
+                        <el-input-number v-model="infoForm.num_result" :min="1" disabled/>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-drawer>
     </div>
 </template>
 
 <style scoped lang="scss">
+.PromptArea {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
 
+    padding-top: 10px;
+
+    margin-top: 5px;
+    margin-bottom: 20px;
+
+    .controlBtn {
+        flex-basis: 100px;
+    }
+
+    .promptBox {
+        flex-grow: 2;
+        flex-basis: 300px;
+        min-width: 200px;
+    }
+
+    .submitBtn {
+        flex-basis: 80px;
+        margin: 0 30px 0 15px;
+        width: 80%;
+
+        .el-button {
+            width: 100%;
+        }
+    }
+}
+
+// For Mobile
+@media screen and (max-width: 480px) {
+    .PromptArea {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 0;
+        padding-top: 10px;
+
+        .controlBtn {
+            display: none;
+        }
+
+        .promptBox {
+            width: 90%;
+            flex-grow: 1;
+            flex-basis: 30px;
+            //padding-top: 5px;
+        }
+
+        .submitBtn {
+            margin: 0;
+            padding-top: 10px;
+            width:90%;
+            flex-basis: 45px;
+
+            .el-button{
+                width: 100%;
+            }
+        }
+
+    }
+}
 </style>

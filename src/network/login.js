@@ -33,7 +33,7 @@ export async function userLogin(username, password) {
         console.error(err)
         ElMessage({
             type: 'error',
-            message: err.response.data['message'],
+            message: err.response.data.message ? err.response.data.message : `${err.response.status} ${err.response.statusText}`,
             duration: 5000,
             showClose: true
         })

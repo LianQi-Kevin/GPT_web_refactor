@@ -27,7 +27,7 @@ const routes = [
         component: () => import('@/view/Chat.vue'),
         meta: {
             requiresAuth: true,
-            title: 'Azure ChatGPT'
+            title: 'ChatGPT'
         }
     },
     {

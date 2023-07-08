@@ -23,7 +23,6 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 additionalData: `@use "@/assets/style/theme.scss" as *;`,
-                // additionalData: `@use "element-plus/theme-chalk/dark/css-vars.css" as *;`,
             },
         },
     },
