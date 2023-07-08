@@ -69,9 +69,15 @@ function restartConversation() {
     }
 }
 
+const modelNameList = [
+    {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
+    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
+    {label: 'GPT-4-32K', value: 'gpt-4-32k'}
+]
+
 // 模型设置
 const infoForm = reactive({
-    "model": "gpt-3.5-turbo",
+    "model": 'gpt-3.5-turbo',
     "temperature": 1,
     "top_p": 1,
     "max_response_tokens": 2048,
@@ -79,12 +85,6 @@ const infoForm = reactive({
     "presence_penalty": 0,
     "frequency_penalty": 0
 })
-
-const modelNameList = [
-    {label: 'GPT-3.5', value: 'gpt-3.5-turbo'},
-    {label: 'GPT-4-8k', value: 'gpt-4-8k'},
-    {label: 'GPT-4-32K', value: 'gpt-4-32k'}
-]
 </script>
 
 <template>
@@ -145,7 +145,7 @@ const modelNameList = [
     align-items: flex-end;
     justify-content: space-between;
 
-    padding-top: 20px;
+    padding-top: 10px;
 
     margin-top: 5px;
     margin-bottom: 20px;
@@ -188,7 +188,7 @@ const modelNameList = [
             width: 90%;
             flex-grow: 1;
             flex-basis: 30px;
-            padding-top: 10px;
+            //padding-top: 5px;
         }
 
         .submitBtn {
