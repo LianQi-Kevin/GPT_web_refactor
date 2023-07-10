@@ -29,7 +29,7 @@ const showParameter = ref(false)
 <template>
     <div class="outside basic">
         <div class="container basic">
-            <div class="title basic" style="border-bottom: #CFD3DC 3px solid; max-height: 40px;">
+            <div class="title basic" style="border-bottom: #8299c5 3px solid; max-height: 40px;">
                 <p>ChatGPT</p>
             </div>
             <div class="chatArea">
@@ -66,6 +66,8 @@ const showParameter = ref(false)
     flex-direction: row;
     align-items: center;
     justify-content: center;
+
+    color: white;
 
     .container {
         // self
