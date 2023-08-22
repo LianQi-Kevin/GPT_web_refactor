@@ -9,7 +9,9 @@ export async function getChatGPTResponse(conversations, configs) {
     try{
         const requestJson = {
             model_name: configs.model,
-            messages: conversations.map(item => {return { role: item.role, content: item.content };}),
+            messages: conversations.map(item => {
+                return {role: item.role, content: item.content};
+            }).slice(0, conversations.length - 1),
             temperature: configs.temperature,
             top_p: configs.top_p,
             max_tokens: configs.max_response_tokens,
