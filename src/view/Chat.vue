@@ -4,6 +4,7 @@ import ChatItem from "@/components/ChatItem.vue";
 import PromptArea from "@/components/PromptArea.vue";
 import "highlight.js/styles/monokai.css"
 import {useRouter} from "vue-router";
+import ThemeSwitch from "@/components/ThemeSwitch.vue";
 
 const router = useRouter()
 
@@ -33,6 +34,9 @@ const showParameter = ref(false)
                 <el-page-header style="padding: 5px 30px 0 10px" @back="() => {router.back()}">
                     <template #content>
                         <span class="text-large font-600 mr-3" style="color: white">Chat-GPT</span>
+                    </template>
+                    <template #extra>
+                        <ThemeSwitch />
                     </template>
                 </el-page-header>
             </div>
