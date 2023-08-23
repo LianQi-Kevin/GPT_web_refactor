@@ -9,6 +9,7 @@ const router = useRouter()
         <el-button-group>
             <el-button @click="() => {router.push('login')}" size="large">To Login</el-button>
             <el-button @click="() => {router.push('chat')}" size="large">To AzureChatGPT</el-button>
+            <el-button @click="() => {router.push('/config')}" size="large">To Config</el-button>
             <el-button @click="() => {router.push('/error/404')}" size="large">To 404NotFound</el-button>
         </el-button-group>
     </div>
