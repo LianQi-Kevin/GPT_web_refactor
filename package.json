@@ -26,6 +26,7 @@
     "vue-router": "^4.2.2"
   },
   "devDependencies": {
+    "@babel/types": "^7.22.5",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vue-hooks-plus/resolvers": "^1.2.4",
     "sass": "^1.63.2",

@@ -23,7 +23,22 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 additionalData: `@use "@/assets/style/theme.scss" as *;`,
-                // additionalData: `@use "element-plus/theme-chalk/dark/css-vars.css" as *;`,
+            },
+        },
+    },
+    server: {
+        proxy: {
+            "/apiDev": {
+                target: "http://127.0.0.1:5000",
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/apiDev/, "")
+            },
+            "/api": {
+                target: "deploy_site",
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/api/, "")
             },
         },
     },

@@ -1,7 +1,9 @@
 <script setup>
 import { MarkdownToHTML } from "@/utils/MarkdownToHTML.js";
 import { getLocalTime } from "@/utils/durationTime.js"
-import { defineEmits, reactive } from "vue";
+import { reactive } from "vue";
+import User from '@/assets/svg/userAvatar.svg'
+import assistant from '@/assets/svg/assistantAvatar.svg'
 
 const props = defineProps({
     markdown: {
@@ -24,15 +26,10 @@ const props = defineProps({
 
 defineEmits(['update:loading'])
 
-const avatarPath = {
-    "user": "src/assets/svg/userAvatar.svg",
-    "assistant": "src/assets/svg/assistantAvatar.svg"
-}
-
 const itemInfo = reactive({
     // for img
     avatarAlt: props.role + "'s Avatar",
-    avatarSrc: avatarPath[`${props.role}`],
+    avatarSrc: props.role==="user" ? User : assistant,
     // classes
     rootClass: props.role + " chatBlock",
     // now local time
@@ -78,7 +75,7 @@ const itemInfo = reactive({
 // basic
 .chatBlock {
     display: flex;
-    max-width: 80vw;
+    max-width: 80%;
 
     .avatar {
         margin-top: 5px;
@@ -136,6 +133,7 @@ const itemInfo = reactive({
         }
 
         .innerHtml {
+            word-break: break-all; // 要求强制换行
             border: #6C6E72 2px solid;
             border-radius: 2px 10px 10px 10px;
         }

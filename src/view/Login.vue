@@ -9,8 +9,8 @@ let loginBtnLoading = ref(false)
 
 // 登录信息
 const loginForm = reactive({
-    username: "admin",
-    password: "yxAlFXQ&EL6!sxQ"
+    username: "",
+    password: ""
 })
 
 // 登录表单内验证信息
@@ -49,7 +49,6 @@ function login(loginForm) {
                 <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password />
             </el-form-item>
             <el-form-item>
-<!--                <el-button type="default" plain size="large" disabled auto-insert-space>注册</el-button>-->
                 <el-button type="primary" plain size="large" @click="login(loginForm)" auto-insert-space
                            :loading-icon="Eleme" :loading="loginBtnLoading">登录</el-button>
             </el-form-item>
@@ -82,7 +81,6 @@ div.container {
 }
 
 .el-button {
-    //width: 47%;
     width: 100%;
 }
 
