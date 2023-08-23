@@ -31,6 +31,16 @@ const routes = [
         }
     },
     {
+        path: '/config',
+        name: 'Config',
+        component: () => import('@/view/Config.vue'),
+        meta: {
+            requiresAuth: true,
+            role_group: ["teacher", "admin"],
+            title: 'Config'
+        }
+    },
+    {
         path: '/error/:id',
         component: () => import('@/view/notFound.vue'),
         props: (route) => ({id: route.params.id || 404}),
